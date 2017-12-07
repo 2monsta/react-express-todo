@@ -2,8 +2,15 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/getStudents', function(req, res, next) {
+  const students = [
+    "eddie",
+    "valerie",
+    "michael",
+    "scott"
+  ];
+
+  res.json(students);
 });
 
 module.exports = router;
