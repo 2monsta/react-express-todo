@@ -49,13 +49,15 @@ class App extends Component {
       )
     );
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className="App container">
+        <div>
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
-        </header>
+        </div>
         <form onSubmit={this.handleSubmit}>
-          <input type="text" id={"new-student"} placeholder={"New Student Name"}/>
+          <div className={"input-field"}>
+            <input type="text" id={"new-student"} placeholder={"New Student Name"}/>
+          </div>
           <button type={"submit"}>Add Student</button>
         </form>
         <ul>
