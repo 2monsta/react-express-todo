@@ -28,6 +28,63 @@ router.get('/getStudents', function(req, res, next) {
 });
 
 
+router.post("/addTask", (req, res,next)=>{
+  console.log(req.body);
+  const NEW_TASK = req.body.taskName;
+  const TASK_DATE = req.body.taskDate;
+  let insertIntoDB = new Promise((resolve, reject)=>{
+    let query = 'insert into tasks (newTask, taskDate) values (?, ?);';
+    connection.query(query, [NEW_TASK, TASK_DATE], (error)=>{
+      if(error){
+        reject(error);
+      }else{
+        resolve({msg:"success"})
+      }
+    });
+  });
+
+  let getDataFromDB = new Promise((resolve, reject)=>{
+    let selectQuery = "select * from tasks;";
+    connection.query(selectQuery, (error, results)=>{
+      if(error){
+        reject(error);
+      }else{
+        resolve(results);
+      }
+    })
+  });
+
+  insertIntoDB
+  .then((msg)=>{
+    console.log(msg);
+    return getDataFromDB;
+  })
+  .then((data)=>{
+    res.json(data);
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+});
+
+router.get("/getTasks", (req,res,next)=>{
+  let getDataFromDB = new Promise((resolve, reject)=>{
+    let selectQuery = "select * from tasks;";
+    connection.query(selectQuery, (error, results)=>{
+      if(error){
+        reject(error);
+      }else{
+        resolve(results);
+      }
+    })
+  });
+
+  getDataFromDB
+  .then((data)=>{
+    res.json(data);
+  })
+});
+
 router.post("/addStudent", (req, res,next)=>{
   const STUDENT_NAME = req.body.studentName;
   const INSERT_QUERY = 'insert into students (name) values (?);';
