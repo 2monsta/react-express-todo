@@ -11,6 +11,8 @@ class ToDo extends Component{
     this.addNewTask= this.addNewTask.bind(this);
   }
 
+
+  // ADD to table
   addNewTask(e){
     e.preventDefault();
     const TASK = document.getElementById("new-task").value;
@@ -31,6 +33,23 @@ class ToDo extends Component{
   }
 
 
+  //DELETE from table
+  handleClick(id){
+    axios({
+      method: "POST",
+      url: "http://localhost:3000/deleteTask",
+      data:{
+        taskID: id
+      }
+    })
+    .then((data)=>{
+      this.setState({
+        taskList: data.data
+      })
+    })
+  }
+
+  //LOAD initial task
   componentDidMount(){
     axios({
       method: "GET",
@@ -50,7 +69,7 @@ class ToDo extends Component{
       return (
         <tr key={index}>
           <td>{task.newTask} - {task.taskDate}</td>
-          <td><button className={"btn red"}>Delete</button></td>
+          <td><button onClick={()=>{this.handleClick(task.id)}} className={"btn red"}>Delete</button></td>
           <td><button className={"btn blue"}>Edit</button></td>
         </tr>
       )

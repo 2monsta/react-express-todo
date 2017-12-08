@@ -109,7 +109,7 @@ router.post("/addStudent", (req, res,next)=>{
   });
 
   insertName
-  .then((data)=>{
+  .then(()=>{
     return getData;
   })
   .then((data)=>{
@@ -119,6 +119,42 @@ router.post("/addStudent", (req, res,next)=>{
   .catch((error)=>{
     console.log(error);
   });
+});
+
+
+router.post("/deleteTask", (req, res, next)=>{
+  const postID = req.body.taskID;
+  let deleteFromDB = new Promise((resolve, reject)=>{
+    let deleteQuery = "delete from tasks where id = ?;";
+    connection.query(deleteQuery, [postID], (error)=>{
+      if(error){
+        reject(error);
+      }else{
+        resolve({msg:"success"})
+      }
+    })
+  });
+
+  let getDataFromDB = new Promise((resolve, reject)=>{
+    let selectQuery = "select * from tasks;";
+    connection.query(selectQuery, (error, results)=>{
+      if(error){
+        reject(error);
+      }else{
+        resolve(results);
+      }
+    })
+  });
+
+  deleteFromDB
+  .then((data)=>{
+    return getDataFromDB;
+  })
+  .then((data)=>{
+    res.json(data);
+  })
+
+
 });
 
 module.exports = router;
