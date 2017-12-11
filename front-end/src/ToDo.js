@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import NavBar from './NavBar';
 import axios from 'axios';
+
 
 class ToDo extends Component{
   constructor(){
@@ -9,6 +9,7 @@ class ToDo extends Component{
       taskList: []
     };
     this.addNewTask= this.addNewTask.bind(this);
+    this.handleClick=this.handleClick.bind(this);
   }
 
 
@@ -25,11 +26,11 @@ class ToDo extends Component{
         taskDate: TASK_DATE
       }
     })
-    .then((taskData)=>{
-      this.setState({
-        taskList:taskData.data
+      .then((taskData)=>{
+        this.setState({
+          taskList:taskData.data
+        })
       })
-    })
   }
 
 
@@ -42,11 +43,11 @@ class ToDo extends Component{
         taskID: id
       }
     })
-    .then((data)=>{
-      this.setState({
-        taskList: data.data
+      .then((data)=>{
+        this.setState({
+          taskList: data.data
+        })
       })
-    })
   }
 
   //LOAD initial task
@@ -55,15 +56,13 @@ class ToDo extends Component{
       method: "GET",
       url: "http://localhost:3000/getTasks"
     })
-    .then((currentTasks)=>{
-      this.setState({
-        taskList: currentTasks.data
-      })
-    });
+      .then((currentTasks)=>{
+        this.setState({
+          taskList: currentTasks.data
+        })
+      });
 
   }
-
-
   render(){
     let taskArray = this.state.taskList.map((task, index)=>{
       return (
@@ -74,14 +73,13 @@ class ToDo extends Component{
         </tr>
       )
     });
-    return(
-      <div className={"to-do-app"}>
-        <NavBar />
+    return (
+      <div>
         <div className="section no-pad-bot" id="index-banner">
           <div className="container">
             <h1 className="header center orange-text">To-Do List</h1>
             <div className="row center">
-              <h5 className="header col s12 light">Made with React/Redux and Express</h5>
+              <h5 className="header col s12 light">Made with MySQL, React/Redux and Express</h5>
             </div>
           </div>
         </div>
@@ -93,11 +91,11 @@ class ToDo extends Component{
           </form>
           <table className={"table table-bordered"}>
             <thead>
-              <tr>
-                <th>Task</th>
-                <th>Delete</th>
-                <th>Edit</th>
-              </tr>
+            <tr>
+              <th>Task</th>
+              <th>Delete</th>
+              <th>Edit</th>
+            </tr>
             </thead>
             <tbody>
               {taskArray}
@@ -108,5 +106,4 @@ class ToDo extends Component{
     )
   }
 }
-
 export default ToDo;
